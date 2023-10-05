@@ -12,9 +12,9 @@ Thành viên:
 
 | Tên | MSSV | Phân công |
 | ------------- |:-------------:| -----:|
-| Vũ Minh Nghĩa | 2001206981 |  |
-| Nguyễn Hữu Trí | 2001200610 |  |
-| Phạm Thị Ngọc Ánh | 2001206947 |  |
+| Vũ Minh Nghĩa | 2001206981 | Code app |
+| Nguyễn Hữu Trí | 2001200610 | Code web |
+| Phạm Thị Ngọc Ánh | 2001206947 | Phân tích thiết kế |
 
 Chức năng:
 
