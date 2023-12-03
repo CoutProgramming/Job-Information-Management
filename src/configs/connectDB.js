@@ -1,11 +1,13 @@
 // get the client
 import mysql from "mysql2/promise";
 
+// create the connection to database
 const pool = mysql.createPool({
-  host: "localhost",
-  user: "NguyenHuuTri",
-  password: "Y1JWL/N@]A_dDXwi",
-  database: "webbanthuoc",
+  host: "103.98.160.26",
+  user: "root",
+  password: "30122002",
+  database: "QL_TuyenDung",
 });
+
 
 export default pool;
