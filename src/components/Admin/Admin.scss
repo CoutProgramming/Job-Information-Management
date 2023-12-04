@@ -1,0 +1,33 @@
+.dashboard-container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+
+    .dashboard-sidebar{
+        width: 20%;
+        height: 100%;
+        //border: solid 1px green;
+
+        .db-logo{
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .logo-image {
+                max-width: 150px;
+                height: 50px; 
+                margin-right: 50px;
+                overflow: hidden;
+              }
+          }
+    }
+
+    .dashboard-content {
+        width: 80%;
+        height: 100%;
+        //border: solid 1px red;
+        overflow-y: auto;
+        padding: 50px;
+    }
+}

@@ -1,121 +1,105 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./Category.scss";
-import {
-  changeCategory
-} from '../../redux/Actions/categoryAction'
-import { connect } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import Modal_ViewApply from "./Modal_ViewApply";
+import Modal_InfoUser from "./Modal_InfoUser";
+import {getUserByID} from '../../service/UserService'
 
 
 const Category = (props) => {
-  // const changeCategory = () => {
-  //   props.changeCategory();
-  // }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [info_User, setInfo_User] = useState(null);
+  const id_User = localStorage.getItem('account_user')
 
-  const navigate = useNavigate();
-  const handleParamUpdate = (newParamValue) => {
-    // Thay đổi giá trị của `paramName` trong URL và chuyển hướng
-    navigate(`?iddm=${newParamValue}`);
-  }
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    getInfoUser();
+  }, [])
+
+    const getInfoUser = async () => {
+      try{
+        let info = await getUserByID(id_User);
+        if(info)
+        {        
+          setInfo_User(info);
+        }
+      }
+      catch(err){
+        console.error(err);
+      }
+    }
+
   return (
     <>
       <div className="category">
-        <div className="Thuoc">
-          Thuốc <i className="fa-solid fa-tablets"></i>
-          <div className="Thuoc-Item">
-            <ul>           
-              {/* <li onClick={() => changeCategory()}>Tim mạch</li> */}
-              <li onClick={() => handleParamUpdate(1)}>Tim mạch</li>
-              <li onClick={() => handleParamUpdate(2)}>Huyết áp</li>
-              <li>Thần kinh</li>
-              <li>Xương khớp</li>
-              <li>Tiêu hoá</li>
-              <li>Da liễu</li>
+        <div className="Dashboard">
+          Trang chủ <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div className="jobPosition">
+          Vị trí tuyển dụng <i class="fa-solid fa-up-down-left-right"></i>
+          <div className="jobPosition-Item">
+            <ul>
+            <NavLink to="/" className="nav-link">
+              Tất cả vị trí tuyển dụng
+              </NavLink>
             </ul>
           </div>
         </div>
-        <div className="TPCN">
-          Thực phẩm chức năng <i className="fa-solid fa-prescription-bottle"></i>
-          <div className="TPCN-Item">
+        <div className="candidate">
+          Ứng viên <i class="fa-solid fa-people-group"></i>
+          <div className="candidate-Item">
             <ul>
-              <li>Bổ gan</li>
-              <li>Bổ não</li>
-              <li>Kẹo ngậm</li>
-              <li>Bổ phế</li>
-              <li>Dầu cá</li>
-              <li>Vitamin</li>
+              <li onClick={showModal}>Tất cả đơn đăng kí</li>
+              {/* <li>Thông báo kết quả</li> */}
             </ul>
           </div>
         </div>
-        <div className="DCYT">
-          Dụng cụ y tế <i className="fa-solid fa-stethoscope"></i>
-          <div className="DCYT-Item">
+        <div className="company">
+          Công ty <i class="fa-regular fa-building"></i>
+          <div className="company-Item">
             <ul>
-              <li>Miếng dán hạ sốt</li>
-              <li>Khẩu trang</li>
-              <li>Nhiệt kế</li>
-              <li>Máy đo huyết áp</li>
-              <li>Kit test covid</li>
-              <li>Nước muối - Bông gòn</li>
+              <li>Tất cả công ty</li>
             </ul>
           </div>
         </div>
-        <div className="MyPham">
-          Mỹ Phẩm <i className="fa-solid fa-hockey-puck"></i>
-          <div className="MyPham-Item">
+        <div className="more_action">
+          Khác <i class="fa-solid fa-circle-plus"></i>
+          <div className="more_action-Item">
             <ul>
-              <li>Dưỡng da</li>
-              <li>Dưỡng môi</li>
-              <li>Kem chống nắng</li>
-              <li>Son dưỡng</li>
-              <li>Mặt nạ</li>
-              <li>Tẩy trang</li>
-            </ul>
-          </div>
-        </div>
-        <div className="CSCN">
-          Chăm sóc cá nhân{" "}
-          <i className="fa-solid fa-prescription-bottle-medical"></i>
-          <div className="CSCN-Item">
-            <ul>
-              <li>Chăm sóc răng miệng</li>
-              <li>Chăm sóc mắt</li>
-              <li>Chăm sóc tay chân</li>
-              <li>Dầu gió</li>
-              <li>Gội, dưỡng xả</li>
-              <li>Bao cao su - Gel</li>
-            </ul>
-          </div>
-        </div>
-        <div className="CSTE">
-          Chăm sóc trẻ em <i className="fa-solid fa-baby"></i>
-          <div className="CSTE-Item">
-            <ul>
-              <li>Khẩu trang cho bé</li>
-              <li>Phấn thơm</li>
-              <li>Sữa bột</li>
-              <li>Dầu gội</li>
-              <li>Tinh dầu</li>
-              <li>Khen ướt</li>
+              <li onClick={showDrawer}>Thông tin ứng viên</li>
+              {/* <li>Thêm công ty</li> */}
             </ul>
           </div>
         </div>
       </div>
+      <Modal_ViewApply
+      showModal={isModalOpen}
+      closeModal={handleCancel}
+      ></Modal_ViewApply>
+
+      <Modal_InfoUser
+      showDrawer={open}
+      closeDrawer={onClose}
+      info={info_User}
+      ></Modal_InfoUser>
     </>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    category: state.category.category,
-  }
-}
 
-const mapDispatchToProps = dispatch => {
-  return {
 
-    changeCategory: () => dispatch(changeCategory()),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Category);
+export default Category;

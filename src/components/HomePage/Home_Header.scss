@@ -23,6 +23,7 @@
     display: inline-block;
     margin: 0 10px;
     color: var(--white-color);
+    cursor: pointer;
   }
   
   .header__navbar-icon {
@@ -110,22 +111,13 @@
     align-items: center;
     width: 200px;
     height: 100%;
+
+    h3{
+      color: #fff;
+      font-size: 20px;
+    }
   }
-  
-  .header_search-cart .cart {
-    font-size: 20px;
-    margin: 0 auto;
-    color: aliceblue;
-    border: solid 1px aliceblue;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .header_search-cart .cart a {
-    text-decoration: none;
-    color: #fff;
-  }
+
   
   
   

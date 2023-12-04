@@ -4,10 +4,9 @@ import img1 from '../../assets/image/img1.png';
 import img2 from '../../assets/image/img2.png';
 import img3 from '../../assets/image/img3.png';
 import img4 from '../../assets/image/img4.png';
-import img5 from '../../assets/image/img5.png';
 
 const Carousel = () => {
-  const images = [img1, img2, img3, img4, img5];
+  const images = [img1, img2, img3, img4];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const changeImage = () => {

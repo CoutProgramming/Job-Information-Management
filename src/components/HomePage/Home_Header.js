@@ -5,41 +5,54 @@ import { NavLink } from "react-router-dom";
 import { Input } from "antd";
 import Category from "../Category/Category";
 import Carousel from "../HomePage/Carousel";
-import Product from "../Product/Product";
-import Cart from '../Cart/Cart';
-import { Button, Drawer, Space } from 'antd';
-import { useSelector } from 'react-redux';
+import Job from "../Job/Job";
+import Company from '../Company/Company'
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import SignUp from "../Login/SignUp";
 
 function HomeHeader() {
-  const [cartCount, setCartCount] = useState(0);
+  const [isLogin, setLogin] = useState(false);
+  const [info_user, setUser] = useState("");
+  const navigate = useNavigate();
+  const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
-  const [size, setSize] = useState();
-  const dataRedux = useSelector(state => state.category.count);
 
-  
   useEffect(() => {
-    handleCartCount();
-  }, [dataRedux]);
-  
-  const handleCartCount = () => {
-    setCartCount(dataRedux);
-    // const count = localStorage.getItem("carts");
-    // if (count) {
-    //   const parsedCarts = JSON.parse(count);
-    //   const cartCount = parsedCarts.length;
-    //   setCartCount(cartCount);
-    // }
+    let user = localStorage.getItem("info_user");
+    if (user) {
+      setUser(user);
+      setLogin(true);
+    }
+  }, []);
 
-    
-  }
-
-  const showLargeDrawer = () => {
-    setSize('large');
+  const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
   };
+
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('account_user');
+    localStorage.removeItem('info_user');
+    localStorage.removeItem('token');
+    toast.success('Logout successful');
+    navigate("/");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
+
+  const handleParamUpdate = (newParamValue) => {
+    // Thay đổi giá trị của `paramName` trong URL và chuyển hướng
+    navigate(`?value=${newParamValue}`);
+  }
 
   return (
     <>
@@ -51,7 +64,7 @@ function HomeHeader() {
                 className="header__navbar-item header__navbar-item-separate"
                 style={{ transform: "translateX(-40%)" }}
               >
-                Chào mừng đến với Nhà Thuốc Quang Phúc
+                Chào mừng đến với website tuyển dụng
               </li>
               <li
                 className="header__navbar-item"
@@ -72,12 +85,26 @@ function HomeHeader() {
                 <i className="fa-regular fa-bell fa-xl"></i>
                 <span className="none-hover">Thông báo</span>
               </li>
-              <li className="header__navbar-item header__navbar-icon">
-                <i className="fa-regular fa-circle-question fa-xl"></i>
-                <span className="none-hover">Trợ giúp</span>
-              </li>
-              <li className="header__navbar-item">Đăng kí</li>
-              <li className="header__navbar-item">Đăng nhập</li>
+              {isLogin ? (
+                <>
+                  <li className="header__navbar-item header__navbar-icon">
+                    <i className="fa-regular fa-circle-question fa-xl"></i>
+                    <span className="none-hover">Trợ giúp</span>
+                  </li>
+                  <li className="header__navbar-item" onClick={handleLogout}>Đăng xuất</li>
+                </>
+              ) : (
+                <>
+                  <li className="header__navbar-item header__navbar-icon">
+                    <i className="fa-regular fa-circle-question fa-xl"></i>
+                    <span className="none-hover">Trợ giúp</span>
+                  </li>
+                  <li className="header__navbar-item" onClick={showDrawer}>Đăng kí</li>
+                  <li className="header__navbar-item" onClick={handleLogin}>
+                    Đăng nhập
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
           <div className="header_search">
@@ -88,54 +115,33 @@ function HomeHeader() {
             </div>
             <div className="header_search-banner">
               <h1>Quang Phuc</h1>
-              <h2>Pharmacity</h2>
+              <h2>COMPANY</h2>
             </div>
             <div className="header_search-input">
-              <Input placeholder="Tìm theo bệnh, tên thuốc,..." />
-              <button className="header_search_button">
+              <Input placeholder="Tìm theo title, skill,..." onChange={(event) => setValue(event.target.value)}/>
+              <button className="header_search_button" onClick={() => {handleParamUpdate(value)}}>
                 <i className="fa-solid fa-magnifying-glass"></i>
                 Tìm
               </button>
             </div>
             <div className="header_search-cart">
-              <div className="cart" onClick={showLargeDrawer}>
-                <div id="cartCount" ></div>
-                <i
-                  className="fa-sharp fa-solid fa-cart-plus"
-                  style={{ marginRight: "7px" }}                
-                ></i>
-                {cartCount}   
-                &nbsp; 
-                Giỏ hàng       
-              </div>
+              {info_user ? (
+                <h3>Xin chào: {info_user}</h3>
+              ) : (
+                <h3>You need login to view more information</h3>
+              )}
             </div>
           </div>
         </div>
       </header>
       <Category></Category>
       <Carousel></Carousel>
-      <Product
-      cartCount={handleCartCount}
-      ></Product>
-      <Drawer
-        title={'Thông tin giỏ hàng'}
-        placement="right"
-        size={size}
-        onClose={onClose}
-        open={open}
-        extra={
-          <Space>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button type="primary" onClick={onClose}>
-              OK
-            </Button>
-          </Space>
-        }
-      >
-        <Cart
-        cartCount={handleCartCount}
-        ></Cart>
-      </Drawer>
+      <Job></Job>
+      <Company></Company>
+      <SignUp
+      openSignUp={open}
+      closeSignUp={onClose}
+      ></SignUp>
     </>
   );
 }

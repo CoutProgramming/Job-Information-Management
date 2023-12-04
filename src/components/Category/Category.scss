@@ -1,149 +1,153 @@
 .category {
-    width: 100%;
-    height: 50px;
-    position: sticky;
-    top: 0;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 24.32px;
-    box-shadow: #948181 2px 2px 10px 0px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    font-weight: bold;
-    font-size: 18px;
-    background-color: #fff;
-  
-    //Thuốc
-    .Thuoc {
-      position: relative;
-  
-      &:hover {
-        .Thuoc-Item {
-          display: block;
-          width: 200px;
-          background-color: white;
-          border-radius: 15px;
+  width: 100%;
+  height: 50px;
+  position: sticky;
+  top: 0;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24.32px;
+  box-shadow: #948181 2px 2px 10px 0px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #fff;
 
-          ul{
-              list-style: none;
-              line-height: 40px;
-              
-              li{
-                cursor: pointer;
+  //Thuốc
+  .Dashboard {
+    position: relative;
+    cursor: pointer;
 
-                &:hover{
-                    color:gray;
-                }
-              }
+  }
+
+  //Thực phẩm chức năng
+  .jobPosition {
+    position: relative;
+
+    &:hover {
+      .jobPosition-Item {
+        display: block;
+        width: 250px;
+        background-color: white;
+        border-radius: 15px;
+
+        ul {
+          list-style: none;
+          line-height: 40px;
+
+          .nav-link {
+            cursor: pointer;
+            text-decoration: none;  
+            color: black;
+
+            &:hover {
+              color: gray;
+            }
           }
         }
       }
-  
-      .Thuoc-Item {
-        position: absolute;
-        display: none;
-      }
     }
-  
-    //Thực phẩm chức năng
-    .TPCN {
-      position: relative;
-  
-      &:hover {
-        .TPCN-Item {
-          display: block;
-          width: 200px;
-          background-color: white;
-          border-radius: 15px;
-          list-style: none;
-        }
-      }
-  
-      .TPCN-Item {
-        position: absolute;
-        display: none;
-      }
-    }
-  
-    //Dụng cụ y tế
-    .DCYT {
-      position: relative;
-  
-      &:hover {
-        .DCYT-Item {
-          display: block;
-          width: 250px;
-          background-color: white;
-          border-radius: 15px;
-          list-style: none;
-        }
-      }
-  
-      .DCYT-Item {
-        position: absolute;
-        display: none;
-      }
-    }
-  
-    //Mỹ phẩm
-    .MyPham {
-      position: relative;
-  
-      &:hover {
-        .MyPham-Item {
-          display: block;
-          width: 200px;
-          background-color: white;
-          border-radius: 15px;
-          list-style: none;
-        }
-      }
-  
-      .MyPham-Item {
-        position: absolute;
-        display: none;
-      }
-    }
-  
-    //Chăm sóc cá nhân
-    .CSCN {
-      position: relative;
-  
-      &:hover {
-        .CSCN-Item {
-          display: block;
-          width: 200px;
-          background-color: white;
-          border-radius: 15px;
-          list-style: none;
-        }
-      }
-  
-      .CSCN-Item {
-        position: absolute;
-        display: none;
-      }
-    }
-  
-    //
-    .CSTE {
-      position: relative;
-  
-      &:hover {
-        .CSTE-Item {
-          display: block;
-          width: 200px;
-          background-color: white;
-          border-radius: 15px;
-          list-style: none;
-        }
-      }
-  
-      .CSTE-Item {
-        position: absolute;
-        display: none;
-      }
+
+    .jobPosition-Item {
+      position: absolute;
+      display: none;
     }
   }
-  
+
+  //Dụng cụ y tế
+  .candidate {
+    position: relative;
+
+    &:hover {
+      .candidate-Item {
+        display: block;
+        width: 250px;
+        background-color: white;
+        border-radius: 15px;
+
+        ul {
+          list-style: none;
+          line-height: 40px;
+
+          li {
+            cursor: pointer;
+
+            &:hover {
+              color: gray;
+            }
+          }
+        }
+      }
+    }
+
+    .candidate-Item {
+      position: absolute;
+      display: none;
+    }
+  }
+
+  //Mỹ phẩm
+  .company {
+    position: relative;
+
+    &:hover {
+      .company-Item {
+        display: block;
+        width: 250px;
+        background-color: white;
+        border-radius: 15px;
+
+        ul {
+          list-style: none;
+          line-height: 40px;
+
+          li {
+            cursor: pointer;
+
+            &:hover {
+              color: gray;
+            }
+          }
+        }
+      }
+    }
+
+    .company-Item {
+      position: absolute;
+      display: none;
+    }
+  }
+
+  //Chăm sóc cá nhân
+  .more_action {
+    position: relative;
+
+    &:hover {
+      .more_action-Item {
+        display: block;
+        width: 200px;
+        background-color: white;
+        border-radius: 15px;
+
+        ul {
+          list-style: none;
+          line-height: 40px;
+
+          li {
+            cursor: pointer;
+
+            &:hover {
+              color: gray;
+            }
+          }
+        }
+      }
+    }
+
+    .more_action-Item {
+      position: absolute;
+      display: none;
+    }
+  }
+}
