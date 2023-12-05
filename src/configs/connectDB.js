@@ -1,13 +1,12 @@
-// get the client
-import mysql from "mysql2/promise";
+var sql = require('mssql');
+var config = {
+    user: 'sa',
+    password: '123',
+    server: 'localhost', 
+    database: 'QL_TuyenDung',
+    options: {
+      trustServerCertificate: true // change to true for local dev / self-signed certs
+    }
+};
 
-// create the connection to database
-const pool = mysql.createPool({
-  host: "103.98.160.26",
-  user: "root",
-  password: "30122002",
-  database: "QL_TuyenDung",
-});
-
-
-export default pool;
+export {sql, config};

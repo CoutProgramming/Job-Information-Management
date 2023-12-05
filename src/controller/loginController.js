@@ -1,80 +1,109 @@
-import pool from "../configs/connectDB";
+import {sql, config} from '../configs/connectDB'
 import loginService, { checkUser_name } from "../service/loginService";
 import { createJWT, verifyJWT } from "../middleware/JWTAuthentication";
 
 let getALLAccounts = async (req, res) => {
-  const [rows, fields] = await pool.execute("SELECT * FROM account_user");
+  try {
+    sql.connect(config, function (err) {
 
-  return res.status(200).json({
-    data: rows,
+      if (err) console.log(err);
+  
+      // create Request object
+      var request = new sql.Request();
+  
+      // query to the database and get the records
+      request.query('select * from account_user', function (err, recordset) {
+  
+          if (err) console.log(err)
+  
+          // send records as a response
+          res.status(200).json({data: recordset});
+  
+      });
   });
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(500).json({ error: 'Error retrieving data' });
+  }
 };
 
 let Login = async (req, res) => {
   try {
-    let username = req.body.username;
-    let password = req.body.password;
+    const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(500).json({
-        errCode: 0,
+      return res.status(400).json({
+        errorCode: 0,
         message: "Missing input parameter!",
       });
     }
-    let userData = await loginService.handleLogin(username, password);
 
-    if (userData && userData.errCode === 3) {
-      let userToken = createJWT(userData.userInfo);
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('username', sql.NVarChar, username)
+      .input('password', sql.NVarChar, password)
+      .query('SELECT * FROM account_user WHERE user_name = @username AND password = @password');
+      console.log('result: ', result);
 
-      let verifyToken = verifyJWT(userToken);
+    if (result.recordset.length > 0) {
+      const userData = result.recordset[0];
+      console.log('user: ', userData);
+      const userToken = createJWT(userData);
+
+      const verifyToken = verifyJWT(userToken);
 
       return res.status(200).json({
-        errCode: userData.errCode,
-        message: userData.message,
+        errCode: 3,
+        message: "Login successfully",
         infoUser: username,
-        account_user: userData.account_user,
+        account_user: userData.role_user,
         token: userToken,
         verifyToken: verifyToken,
       });
     }
 
     return res.json({
-      errorCode: userData.errCode,
-      message: userData.message,
+      errorCode: 1,
+      message: "Invalid username or password",
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(500).json({ error: 'Error during login' });
   }
 };
 
 let checkAccountSignuped = async (username) => {
   try {
-    const [user, fields] = await pool.execute(
-      "SELECT * FROM account_user where user_name = ?",
-      [username]
-    );
-    console.log(user);
-    if (user === undefined || user.length == 0) {
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('username', sql.NVarChar, username)
+      .query('SELECT * FROM account_user WHERE user_name = @username');
+
+    if (result.recordset.length === 0) {
       return false;
     } else {
       return true;
     }
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    console.error('Error occurred:', error);
+    // Xử lý lỗi hoặc thông báo lỗi tùy thuộc vào logic ứng dụng của bạn
+    return false;
   }
 };
 
 let Signup = async (req, res) => {
-  let { username, password } = req.body;
-  //console.log(req.body);
-  let checkUser = await checkAccountSignuped(username);
-  console.log(checkUser);
-  if (checkUser === true) {
-    return res.status(200).json({
-      message: "Tài khoản này đã tồn tại",
-    });
-  } else {
-    try {
+  try {
+    const { username, password } = req.body;
+
+    const checkUser = await checkAccountSignuped(username);
+
+    if (checkUser === true) {
+      return res.status(200).json({
+        message: "Tài khoản này đã tồn tại",
+      });
+    } else {
+      const pool = await sql.connect(config);
+
       function generateRandomId() {
         const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
         let result = "";
@@ -89,19 +118,23 @@ let Signup = async (req, res) => {
       // Tạo một mã ngẫu nhiên
       let id_account = generateRandomId();
       let role = 2;
-      const [user, fields] = await pool.execute(
-        "INSERT INTO account_user values (?, ?, ?, ?)",
-        [id_account, username, password, role]
-      );
-      if(user)
-      {
+
+      const result = await pool.request()
+        .input('id_account', sql.NVarChar, id_account)
+        .input('username', sql.NVarChar, username)
+        .input('password', sql.NVarChar, password)
+        .input('role', sql.Int, role)
+        .query('INSERT INTO account_user VALUES (@id_account, @username, @password, @role)');
+
+      if (result.rowsAffected && result.rowsAffected[0] === 1) {
         return res.status(200).json({
-          message: "Đăng kí tài khoản thành công",
+          message: "Đăng ký tài khoản thành công",
         });
       }
-    } catch (err) {
-      console.log(err);
     }
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(500).json({ error: 'Error during account registration' });
   }
 };
 
