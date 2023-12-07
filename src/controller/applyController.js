@@ -1,6 +1,6 @@
 import {sql, config} from '../configs/connectDB'
 const moment = require("moment");
-import main from './sendmailController';
+import {main, mailPhongVan} from './sendmailController';
 
 let getApply = async (req, res) => {
   try {
@@ -27,12 +27,52 @@ let getApply = async (req, res) => {
   }
 };
 
+let getNotification = async (req, res) => {
+  try {
+    sql.connect(config, function (err) {
+
+      if (err) console.log(err);
+  
+      // create Request object
+      var request = new sql.Request();
+  
+      // query to the database and get the records
+      request.query('select * from notification', function (err, recordset) {
+  
+          if (err) console.log(err)
+  
+          // send records as a response
+          res.status(200).json(recordset);
+  
+      });
+  });
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(404).json({ error: 'Error retrieving data' });
+  }
+}
+
+let getApplyIsCheck = async (req, res) => {
+  try {
+    const status = "Đang tiến hành xếp lịch phỏng vấn";
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('status', sql.NVarChar, status)
+      .query('SELECT * FROM apply WHERE status_apply = @status');
+    
+    return res.status(200).json(result.recordset);
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(404).json({ error: 'Error retrieving apply information' });
+  }
+};
+
 let getApplyById = async (req, res) => {
   try {
     const idJob = req.params.id;
     const pool = await sql.connect(config);
     const result = await pool.request()
-      .input('idJob', sql.Int, idJob)
+      .input('idJob', sql.NVarChar, idJob)
       .query('SELECT * FROM apply WHERE id = @idJob');
     
     return res.status(200).json(result.recordset);
@@ -111,7 +151,7 @@ let createApply = async (req, res) => {
         .query('INSERT INTO apply VALUES (@id_Apply, @account, @job, @status, @dateValue)');
 
       if (result.rowsAffected && result.rowsAffected[0] === 1) {
-        main();
+        main(job, dateValue);
         return res.status(200).json({
           message: "Ứng tuyển công việc thành công",
         });
@@ -161,11 +201,88 @@ let deleteApply = async (req, res) => {
   }
 };
 
+let updateApply = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "Invalid data input",
+      });
+    }
+
+    const pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('id', sql.NVarChar, id)
+      .input('status', sql.NVarChar, "Đang tiến hành xếp lịch phỏng vấn")
+      .query('UPDATE apply SET status_apply = @status WHERE id = @id');
+
+    if (result.rowsAffected && result.rowsAffected[0] === 1) {
+      return res.status(200).json({ message: "Duyệt hồ sơ thành công" });
+    } else {
+      return res.status(404).json({ message: "Hồ sơ không tìm thấy" });
+    }
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(500).json({ error: 'Error updating apply information' });
+  }
+};
+
+let createNotification = async (req, res) => {
+  try {
+    const { title, content, account} = req.body;
+    console.log(req.body);
+
+    if (!title || !content || !account) {
+      return res.status(400).json({
+        message: "Invalid data input",
+      });
+    }
+
+    const pool = await sql.connect(config);
+
+    function generateRandomId() {
+      const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+      let result = "";
+
+      for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+      }
+      return result;
+    }
+
+    // Tạo một mã ngẫu nhiên
+    const id = generateRandomId();
+    const time = `Bạn có lịch phỏng vấn vào ngày ${content}`;
+
+    await pool.request()
+      .input('id_notification', sql.NVarChar, id)
+      .input('title', sql.NVarChar, title)
+      .input('content', sql.NVarChar, time)
+      .input('account', sql.Int, account)
+      .query('INSERT INTO notification VALUES (@id_notification, @title, @content, @account)');
+    
+
+    mailPhongVan(time);
+    return res.status(200).json({
+      message: "Create new notification successfully",
+    });
+  } catch (error) {
+    console.error('Error occurred:', error);
+    return res.status(500).json({ error: 'Error creating new notification' });
+  }
+}
+
 module.exports = {
   getApply,
+  getNotification,
   getApplyById,
   createApply,
   checkApply,
   deleteApply,
-  getAllApplyById
+  getAllApplyById,
+  getApplyIsCheck,
+  updateApply,
+  createNotification
 };
