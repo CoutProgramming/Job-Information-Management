@@ -1,5 +1,6 @@
 import {sql, config} from '../configs/connectDB'
 const moment = require("moment");
+import main from './sendmailController';
 
 let getApply = async (req, res) => {
   try {
@@ -110,6 +111,7 @@ let createApply = async (req, res) => {
         .query('INSERT INTO apply VALUES (@id_Apply, @account, @job, @status, @dateValue)');
 
       if (result.rowsAffected && result.rowsAffected[0] === 1) {
+        main();
         return res.status(200).json({
           message: "Ứng tuyển công việc thành công",
         });

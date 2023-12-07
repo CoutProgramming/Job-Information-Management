@@ -1,102 +1,90 @@
-import {sql, config} from '../configs/connectDB'
+import { sql, config } from "../configs/connectDB";
 
 let getJobs = async (req, res) => {
   try {
     sql.connect(config, function (err) {
-
       if (err) console.log(err);
-  
+
       // create Request object
       var request = new sql.Request();
-  
+
       // query to the database and get the records
-      request.query('select * from info_Job', function (err, recordset) {
-  
-          if (err) console.log(err)
-  
-          // send records as a response
-          res.status(200).send(recordset);
-  
+      request.query("select * from info_Job", function (err, recordset) {
+        if (err) console.log(err);
+
+        // send records as a response
+        res.status(200).send(recordset);
       });
-  });
+    });
   } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error retrieving data' });
+    console.error("Error occurred:", error);
+    return res.status(500).json({ error: "Error retrieving data" });
   }
 };
 
 let getPriority = async (req, res) => {
   try {
     sql.connect(config, function (err) {
-
       if (err) console.log(err);
-  
+
       // create Request object
       var request = new sql.Request();
-  
+
       // query to the database and get the records
-      request.query('select * from priority_level', function (err, recordset) {
-  
-          if (err) console.log(err)
-  
-          // send records as a response
-          res.status(200).json(recordset);
-  
+      request.query("select * from priority_level", function (err, recordset) {
+        if (err) console.log(err);
+
+        // send records as a response
+        res.status(200).json(recordset);
       });
-  });
+    });
   } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error retrieving data' });
+    console.error("Error occurred:", error);
+    return res.status(500).json({ error: "Error retrieving data" });
   }
 };
 
 let getMajor = async (req, res) => {
   try {
     sql.connect(config, function (err) {
-
       if (err) console.log(err);
-  
+
       // create Request object
       var request = new sql.Request();
-  
+
       // query to the database and get the records
-      request.query('select * from major', function (err, recordset) {
-  
-          if (err) console.log(err)
-  
-          // send records as a response
-          res.status(200).json(recordset);
-  
+      request.query("select * from major", function (err, recordset) {
+        if (err) console.log(err);
+
+        // send records as a response
+        res.status(200).json(recordset);
       });
-  });
+    });
   } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error retrieving data' });
+    console.error("Error occurred:", error);
+    return res.status(500).json({ error: "Error retrieving data" });
   }
 };
 
 let getEducation = async (req, res) => {
   try {
     sql.connect(config, function (err) {
-
       if (err) console.log(err);
-  
+
       // create Request object
       var request = new sql.Request();
-  
+
       // query to the database and get the records
-      request.query('select * from education_level', function (err, recordset) {
-  
-          if (err) console.log(err)
-  
-          // send records as a response
-          res.status(200).json(recordset);
-  
+      request.query("select * from education_level", function (err, recordset) {
+        if (err) console.log(err);
+
+        // send records as a response
+        res.status(200).json(recordset);
       });
-  });
+    });
   } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error retrieving data' });
+    console.error("Error occurred:", error);
+    return res.status(500).json({ error: "Error retrieving data" });
   }
 };
 
@@ -104,17 +92,17 @@ let getJobById = async (req, res) => {
   try {
     const idJob = req.params.id;
     const pool = await sql.connect(config);
-    const result = await pool.request()
-      .input('jobId', sql.Int, idJob)
-      .query('SELECT * FROM info_Job WHERE id = @jobId');
-    
+    const result = await pool
+      .request()
+      .input("id", sql.NVarChar, idJob)
+      .query("SELECT * FROM info_Job WHERE id = @id");
+
     return res.status(200).json(result.recordset);
   } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error retrieving job by ID' });
+    console.error("Error occurred:", error);
+    return res.status(500).json({ error: "Error retrieving job by ID" });
   }
 };
-
 
 let createJob = async (req, res) => {
   try {
@@ -168,22 +156,39 @@ let createJob = async (req, res) => {
     // Tạo một mã ngẫu nhiên
     let id_job = generateRandomId();
 
-    const result = await pool.request()
-      .query('INSERT INTO info_Job VALUES (@id_job, @title, @description, @salary, @note, @status, @count, @time, @priority, @major, @account, @company, @education)', {
-        id_job,
-        title,
-        description,
-        salary,
-        note,
-        status,
-        count,
-        time,
-        priority,
-        major,
-        account,
-        company,
-        education,
-      });
+    const result = await pool
+      .request()
+      .input("id", sql.NVarChar, id_job)
+      .input("title", sql.NVarChar, title)
+      .input("description_Job", sql.NVarChar, description)
+      .input("salary", sql.Float, salary)
+      .input("note", sql.NVarChar, note)
+      .input("status_Job", sql.NVarChar, status)
+      .input("count", sql.Int, count)
+      .input("time_Create", sql.NVarChar, time)
+      .input("priorityID", sql.Int, priority)
+      .input("majorID", sql.Int, major)
+      .input("accountID", sql.Int, account)
+      .input("companyID", sql.NVarChar, company)
+      .input("educationID", sql.Int, education)
+      .query(
+        "INSERT INTO info_Job VALUES (@id, @title, @description_Job, @salary, @note, @status_Job, @count, @time_Create, @priorityID, @majorID, @accountID, @companyID, @educationID)",
+        {
+          id_job,
+          title,
+          description,
+          salary,
+          note,
+          status,
+          count,
+          time,
+          priority,
+          major,
+          account,
+          company,
+          education,
+        }
+      );
 
     if (result.rowsAffected && result.rowsAffected[0] === 1) {
       return res.status(200).json({
@@ -195,24 +200,24 @@ let createJob = async (req, res) => {
       });
     }
   } catch (err) {
-    console.error('Error occurred:', err);
-    return res.status(500).json({ error: 'Error creating job' });
+    console.error("Error occurred:", err);
+    return res.status(500).json({ error: "Error creating job" });
   }
 };
-
 
 let getJobBySearch = async (req, res, next) => {
   try {
     const value = req.params.value;
     const pool = await sql.connect(config);
-    const result = await pool.request()
-      .input('searchValue', sql.NVarChar, `%${value}%`)
-      .query('SELECT * FROM info_Job WHERE title LIKE @searchValue');
-    
+    const result = await pool
+      .request()
+      .input("searchValue", sql.NVarChar, `%${value}%`)
+      .query("SELECT * FROM info_Job WHERE title LIKE @searchValue");
+
     return res.status(200).json(result.recordset);
   } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error searching jobs' });
+    console.error("Error occurred:", error);
+    return res.status(500).json({ error: "Error searching jobs" });
   }
 };
 
@@ -235,30 +240,35 @@ let updateJob = async (req, res) => {
     } = req.body;
 
     const pool = await sql.connect(config);
-    const result = await pool.request()
-      .input('title', sql.NVarChar, title)
-      .input('description', sql.NVarChar, description)
-      .input('salary', sql.Float, salary)
-      .input('note', sql.NVarChar, note)
-      .input('status', sql.NVarChar, status)
-      .input('count', sql.Int, count)
-      .input('time', sql.NVarChar, time)
-      .input('priority', sql.Int, priority)
-      .input('major', sql.Int, major)
-      .input('account', sql.Int, account)
-      .input('company', sql.Int, company)
-      .input('education', sql.Int, education)
-      .input('id', sql.Int, id)
-      .query('UPDATE info_Job SET title = @title, description_Job = @description, salary = @salary, note = @note, status_Job = @status, count = @count, time_Create = @time, priorityID = @priority, majorID = @major, accountID = @account, companyID = @company, educationID = @education WHERE id = @id');
-    
+    const result = await pool
+      .request()
+      .input("title", sql.NVarChar, title)
+      .input("description", sql.NVarChar, description)
+      .input("salary", sql.NVarChar, salary)
+      .input("note", sql.NVarChar, note)
+      .input("status", sql.NVarChar, status)
+      .input("count", sql.Int, count)
+      .input("time", sql.NVarChar, time)
+      .input("priority", sql.Int, priority)
+      .input("major", sql.Int, major)
+      .input("account", sql.Int, account)
+      .input("company", sql.NVarChar, company)
+      .input("education", sql.Int, education)
+      .input("id", sql.NVarChar, id)
+      .query(
+        "UPDATE info_Job SET title = @title, description_Job = @description, salary = @salary, note = @note, status_Job = @status, count = @count, time_Create = @time, priorityID = @priority, majorID = @major, accountID = @account, companyID = @company, educationID = @education WHERE id = @id"
+      );
+
     if (result.rowsAffected && result.rowsAffected[0] === 1) {
       return res.status(200).json({ message: "Update successful" });
     } else {
-      return res.status(404).json({ message: "Job not found or no changes made" });
+      return res
+        .status(404)
+        .json({ message: "Job not found or no changes made" });
     }
   } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error updating job' });
+    console.error("Error occurred:", error);
+    return res.status(500).json({ error: "Error updating job" });
   }
 };
 
@@ -270,9 +280,10 @@ let deleteJob = async (req, res) => {
     }
 
     const pool = await sql.connect(config);
-    const result = await pool.request()
-      .input('id_Job', sql.Int, id_Job)
-      .query('DELETE FROM info_Job WHERE id = @id_Job');
+    const result = await pool
+      .request()
+      .input("id_Job", sql.Int, id_Job)
+      .query("DELETE FROM info_Job WHERE id = @id_Job");
 
     if (result.rowsAffected && result.rowsAffected[0] === 1) {
       return res.status(200).json({ message: "Deleted job successfully" });
@@ -280,8 +291,8 @@ let deleteJob = async (req, res) => {
       return res.status(404).json({ message: "Job not found" });
     }
   } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error deleting job' });
+    console.error("Error occurred:", error);
+    return res.status(500).json({ error: "Error deleting job" });
   }
 };
 
@@ -294,5 +305,5 @@ module.exports = {
   getEducation,
   deleteJob,
   updateJob,
-  getJobBySearch
+  getJobBySearch,
 };
