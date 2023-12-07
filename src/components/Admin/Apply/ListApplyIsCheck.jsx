@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
-  getAllApply,
+    getAllApplyIsCheck,
   getApplyByID,
   deleteApply,
 } from "../../../service/ApplyService";
 import { Table, Popconfirm, Space, Button } from "antd";
 import moment from "moment";
-import Modal_ViewApply from "./Modal_ViewApply";
+import Modal_ViewApplyIsCheck from "./Modal_ViewApplyIsCheck";
 import { toast } from "react-toastify";
 
-const List_Apply = () => {
+const ListApplyIsCheck = () => {
   const [List_Applies, setListApply] = useState([]);
   const [InfoApply, setInfoApply] = useState([]);
   const [open, setOpenModal] = useState(false);
@@ -27,14 +27,15 @@ const List_Apply = () => {
 
   const showApplication = async () => {
     try {
-      const response = await getAllApply();
+      const response = await getAllApplyIsCheck();
       if (response) {
-        let data = response.recordsets[0].map((item) => {
+        let data = response.map((item) => {
           return {
             ...item,
             create_Time: moment(item.create_Time).format("DD - MM - YYYY"),
           };
         });
+        console.log('dataL ', data);
         setListApply(data);
       }
     } catch (err) {
@@ -57,7 +58,7 @@ const List_Apply = () => {
   const handleDeleteApply = async (id) => {
     let result = await deleteApply(id);
     if (result) {
-      toast.success("Xoá đơn ứng tuyển thành công!");
+      toast.success("Xoá thông tin thành công!");
       showApplication();
     }
   };
@@ -123,7 +124,7 @@ const List_Apply = () => {
       <h1>DANH SÁCH ỨNG TUYỂN</h1>
       <br></br>
       <Table dataSource={List_Applies} columns={columns} />;
-      <Modal_ViewApply
+      <Modal_ViewApplyIsCheck
         openModal={open}
         closeModal={closeModal}
         InfoApply={InfoApply}
@@ -132,4 +133,4 @@ const List_Apply = () => {
   );
 };
 
-export default List_Apply;
+export default ListApplyIsCheck;

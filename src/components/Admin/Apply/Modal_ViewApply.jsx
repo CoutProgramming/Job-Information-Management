@@ -1,17 +1,19 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { Form, Modal, Row, Col, Input, Button} from 'antd';
-import {updateCompany} from '../../../service/CompanyService'
 import { toast } from "react-toastify";
+import {updateApply} from '../../../service/ApplyService'
 
 const Modal_ViewApply = (props) => {
 
   const [form] = Form.useForm();
    let info_Apply = props.InfoApply;
-   console.log('apply: ', info_Apply);
+   const [id_Apply, setIdApply] = useState('');
 
    useEffect(() => {
     if(info_Apply.length > 0)
     {
+      setIdApply(info_Apply[0].id)
+      console.log('apply: ', id_Apply);
       onFill();
     }
   }, [props.InfoApply])
@@ -26,13 +28,10 @@ const Modal_ViewApply = (props) => {
     })
   }
 
-  const update_Company = async () => {
-    let data = form.getFieldsValue();
-    let result = await updateCompany(data);
-    if(result)
-    {
-      toast.success("Update company successfully!")
-      props.showCompany();
+  const update_Apply = async () => {
+    let result = await updateApply(id_Apply);
+    if (result) {
+      toast.success("Duyệt hồ sơ thành công!");
       props.closeModal();
     }
   }
@@ -91,7 +90,7 @@ const Modal_ViewApply = (props) => {
             <Col span={12}>
               <Form.Item
                 name="time"
-                label="Thời gian tạo"
+                label="Thời gian ứng tuyển"
                 rules={[
                   {
                     required: true,
@@ -118,7 +117,7 @@ const Modal_ViewApply = (props) => {
             </Col>
           </Row>
         </Form>
-        <Button onClick={update_Company}>Cập nhật</Button>
+        <Button onClick={update_Apply}>Duyệt hồ sơ</Button>
       </Modal>
         </>
     )

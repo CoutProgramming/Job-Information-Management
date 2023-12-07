@@ -11,6 +11,8 @@ import { Menu, Button } from "antd";
 import List_Company from "./Company/List_Company";
 import List_Job from "./Job/List_Job";
 import List_Apply from "./Apply/ListApply";
+import ListApplyIsCheck from "./Apply/ListApplyIsCheck";
+import ListNotification from "./Apply/ListNotification";
 import Account from "./Account/Account";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -61,6 +63,8 @@ function Dashboard() {
     },
     getItem("Quản lí ứng tuyển", "sub4", <TableOutlined />, [
       getItem(<div>Danh sách ứng tuyển</div>, "10"),
+      getItem(<div>Danh sách đã duyệt</div>, "11"),
+      getItem(<div>Danh sách lịch phỏng vấn</div>, "12"),
     ]),
     getItem("Quản lí tài khoản", "sub5", <TableOutlined />, [
       getItem(<div>Danh sách tài khoản</div>, "18"),
@@ -88,6 +92,12 @@ function Dashboard() {
       break;
     case "10":
       contentToDisplay = <List_Apply />;
+      break;
+    case "11":
+      contentToDisplay = <ListApplyIsCheck />;
+      break;
+    case "12":
+      contentToDisplay = <ListNotification />;
       break;
     case "18":
       contentToDisplay = <Account />;
