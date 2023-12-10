@@ -12,13 +12,13 @@ Thành viên:
 
 | Tên | MSSV | Phân công |
 | ------------- |:-------------:| -----:|
-| Vũ Minh Nghĩa | 2001206981 | Code app |
+| Vũ Minh Nghĩa | 2001206981 | Code Tính năng Al |
 | Nguyễn Hữu Trí | 2001200610 | Code web |
-| Phạm Thị Ngọc Ánh | 2001206947 | Phân tích thiết kế |
+| Phạm Thị Ngọc Ánh | 2001206947 | Phân tích thiết kế và code app |
 
 Chức năng:
 
-- Ứng dụng Web - Sử dụng ASP.NET Core:
+- Ứng dụng Web - Sử dụng NodeJS và React JS:
   + Quản lý vị trí tuyển dụng: Tạo và quản lý danh sách các vị trí tuyển dụng khác nhau trong một tổ chức
   + Thu thập hồ sơ ứng viên: Cung cấp biểu mẫu đơn xin việc để thu thập thông tin từ ứng viên
   + Quản lý thông tin ứng viên: Lưu trữ và quản lý thông tin chi tiết về ứng viên bao gồm hồ sơ, kinh nghiệm làm việc, trình độ học vấn và kỹ năng,...
@@ -36,6 +36,7 @@ Chức năng:
   + Lên lịch phỏng vấn: Lên lịch và quản lý các cuộc phỏng vấn với ứng viên và gửi thông báo tự động về lịch phỏng vấn
   + Thống kê và báo cáo: Tạo các báo cáo thống kê về quá trình tuyển dụng, hiệu suất, nguồn tuyển dụng và thời gian phỏng vấn
     
-- Ứng dụng AI:
-  + Lọc ảo ứng viên tuyển dụng theo nhu cầu tuyển dụng.
+- Ứng dụng AI :
+  + Gợi í công việc phù hợp với ứng viên.
+  + Chatbox tư vấn công việc sử dụng API OpenAl 
 
