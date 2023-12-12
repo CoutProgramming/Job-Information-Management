@@ -1,47 +1,77 @@
-import React, { useEffect } from "react";
-import {Button, Modal, Form, Row, Col, Input, DatePicker } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Modal, Form, Row, Col, Input, DatePicker } from "antd";
 import moment from "moment";
-import {createApply} from '../../service/ApplyService';
-import { toast } from 'react-toastify';
+import { createApply, uploadCV } from "../../service/ApplyService";
+import { toast } from "react-toastify";
 
 const Apply_Job = (props) => {
-    const [form] = Form.useForm();
-    const currentDate = moment();
-    console.log('date: ', currentDate)
-    const idUser = localStorage.getItem('account_user')
-    const idJob = props.idJob;
+  const [form] = Form.useForm();
+  const currentDate = moment();
+  const [file, setFile] = useState([]);
+  console.log("date: ", currentDate);
+  const idUser = localStorage.getItem("account_user");
+  const idJob = props.idJob;
 
-
-
-    useEffect(() => {
-        if(currentDate)
-        {
-          onFill();
-        }
-      }, [idJob])
-
-    const onFill = () => {
-        form.setFieldsValue({
-            time: currentDate,
-            account: idUser,
-            job: idJob
-        })
+  useEffect(() => {
+    if (currentDate) {
+      onFill();
     }
+  }, [idJob]);
 
-    const handleApply = async () => {
-        let data = form.getFieldsValue();
-        let result = await createApply(data);
-        if(result.message === "Bạn đã ứng tuyển công việc này rồi!")
-        {
-            toast.warning(result.message);           
-        }
-        else
-        {
-          props.closeApply();
-          toast.success(result.message);
-          //handleSendEmail();
-        }
+  const onFill = () => {
+    form.setFieldsValue({
+      time: currentDate,
+      account: idUser,
+      job: idJob,
+    });
+  };
+
+  const handleApply = async () => {
+    if(file.length === 0)
+    {
+      toast.error("Bạn cần upload CV trước khi apply")
     }
+    else{
+      let data = form.getFieldsValue();
+      let result = await createApply(data);
+      if (result.message === "Bạn đã ứng tuyển công việc này rồi!") {
+        toast.warning(result.message);
+      } else {
+        handleSaveFile();
+        props.closeApply();
+        toast.success(result.message);
+        //handleSendEmail();
+      }
+    }
+  };
+
+  const handleUploadFile = (event) => {
+    console.log("file: ", event.target.files[0]);
+    if (event.target && event.target.files && event.target.files[0]) {
+      let fileCurrent = event.target.files[0];
+      if (fileCurrent.type !== "application/pdf") {
+        toast.error("Chỉ chấp nhận file pdf");
+        console.log("file upload: ", file);
+        return;
+      }
+      else{
+        setFile(fileCurrent);
+        toast.success("Upload CV thành công");
+        console.log("file upload: ", file);
+        return
+      }
+    }
+  }
+
+  const handleSaveFile = async () => {
+    try {
+      const formData = new FormData();
+        formData.append("cv-user", file);
+        await uploadCV(formData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
@@ -94,12 +124,27 @@ const Apply_Job = (props) => {
                   },
                 ]}
               >
-                <DatePicker/>
+                <DatePicker />
               </Form.Item>
-            </Col>         
+            </Col>
           </Row>
         </Form>
-        <Button type="primary" onClick={handleApply}>Ứng tuyển</Button>
+        <div>
+          <label htmlFor="test" className="btn btn-primary">
+            <i class="fa-solid fa-file-import"></i> Upload CV
+          </label>
+          <input
+            id="test"
+            type="file"
+            name="uploadfile"
+            hidden
+            onChange={(event) => handleUploadFile(event)}
+          ></input>
+        </div>
+        <br></br>
+        <Button type="primary" onClick={handleApply}>
+          Ứng tuyển
+        </Button>
       </Modal>
     </>
   );

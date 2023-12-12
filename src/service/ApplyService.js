@@ -32,8 +32,12 @@ const updateApply = (id) =>{
     return axios.put(`/update-apply/${id}`);
 }
 
+const uploadCV = (data) =>{
+    return axios.post(`/upload-cv`, data);
+}
+
 const deleteApply = (id) =>{
     return axios.delete(`/delete-apply/${id}`);
 }
 
-export {getAllApply, getApplyByID, createApply, deleteApply, getAllApplyByID, getAllApplyIsCheck, updateApply, createNotification, getAllNotification}
+export {getAllApply, getApplyByID, createApply, deleteApply, getAllApplyByID, getAllApplyIsCheck, updateApply, createNotification, getAllNotification, uploadCV}
