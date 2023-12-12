@@ -2,6 +2,8 @@ import {sql, config} from '../configs/connectDB'
 const moment = require("moment");
 import {main, mailPhongVan} from './sendmailController';
 
+let name_file;
+
 let getApply = async (req, res) => {
   try {
     sql.connect(config, function (err) {
@@ -87,7 +89,7 @@ let getAllApplyById = async (req, res) => {
     const idAccount = req.params.id;
     const pool = await sql.connect(config);
     const result = await pool.request()
-      .input('idAccount', sql.Int, idAccount)
+      .input('idAccount', sql.NVarChar, idAccount)
       .query('SELECT * FROM apply WHERE accountID = @idAccount');
     
     return res.status(200).json(result.recordset);
@@ -114,7 +116,7 @@ let createApply = async (req, res) => {
     async function checkApply(account, job) {
       const result = await pool.request()
         .input('account', sql.Int, account)
-        .input('job', sql.Int, job)
+        .input('job', sql.NVarChar, job)
         .query('SELECT * FROM apply WHERE accountID = @account AND jobID = @job');
 
       return result.recordset.length > 0;
@@ -141,14 +143,21 @@ let createApply = async (req, res) => {
       // Tạo một mã ngẫu nhiên
       let id_Apply = generateRandomId();
       let status = "Chờ duyệt";
+      let name = '';
+      if(name_file !== "")
+      {
+        name = name_file;
+      }
+      console.log('name: ', name_file)
 
       const result = await pool.request()
         .input('id_Apply', sql.NVarChar, id_Apply)
         .input('account', sql.Int, account)
-        .input('job', sql.Int, job)
+        .input('job', sql.NVarChar, job)
         .input('status', sql.NVarChar, status)
         .input('dateValue', sql.Date, dateValue)
-        .query('INSERT INTO apply VALUES (@id_Apply, @account, @job, @status, @dateValue)');
+        .input('cv', sql.NVarChar, name)
+        .query('INSERT INTO apply VALUES (@id_Apply, @account, @job, @status, @dateValue, @cv)');
 
       if (result.rowsAffected && result.rowsAffected[0] === 1) {
         main(job, dateValue);
@@ -168,7 +177,7 @@ let checkApply = async (account, job) => {
     const pool = await sql.connect(config);
     const result = await pool.request()
       .input('account', sql.Int, account)
-      .input('job', sql.Int, job)
+      .input('job', sql.NVarChar, job)
       .query('SELECT * FROM apply WHERE accountID = @account AND jobID = @job');
 
     return result.recordset.length > 0;
@@ -274,6 +283,17 @@ let createNotification = async (req, res) => {
   }
 }
 
+let handleUploadCV = async (req, res) => {
+  console.log('file up: ',req.file);
+  name_file = req.file.filename;
+  console.log('name_file: ',name_file);
+  if (req.fileValidationError) {
+    return res.send(req.fileValidationError);
+  } else if (!req.file) {
+    return res.send("Please select an file to upload");
+  }
+}
+
 module.exports = {
   getApply,
   getNotification,
@@ -284,5 +304,6 @@ module.exports = {
   getAllApplyById,
   getApplyIsCheck,
   updateApply,
-  createNotification
+  createNotification,
+  handleUploadCV
 };
