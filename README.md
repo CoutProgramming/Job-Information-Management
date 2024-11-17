@@ -1,42 +1,41 @@
-# T6-PMTM2023-QLThongTinTuyenDung
+# T6- Intelligent Software 2023-Job Information Management
 
-## Giới thiệu Ứng dụng Quản lý thông tin tuyển dụng
+## Introduction to the Job Information Management Application
 
-Ứng dụng Quản lý thông tin tuyển dụng
-Học phần: Phát triển ứng dụng thông minh
+Job Information Management Application  
+Course: Intelligent Application Development  
 
-Thành viên:
-- Vũ Minh Nghĩa
-- Phạm Thị Ngọc Ánh
-- Nguyễn Hữu Trí
+Team Members:
+- Vũ Minh Nghĩa  
+- Phạm Thị Ngọc Ánh  
+- Nguyễn Hữu Trí  
 
-| Tên | MSSV | Phân công |
-| ------------- |:-------------:| -----:|
-| Vũ Minh Nghĩa | 2001206981 | Code Tính năng Al |
-| Nguyễn Hữu Trí | 2001200610 | Code web |
-| Phạm Thị Ngọc Ánh | 2001206947 | Phân tích thiết kế và code app |
+| Name             | Student ID  | Responsibilities               |
+|------------------|:-----------:|--------------------------------:|
+| Vũ Minh Nghĩa    | 20012069xx  | AI Feature Development         |
+| Nguyễn Hữu Trí   | 20012006xx  | Web Development                |
+| Phạm Thị Ngọc Ánh| 20012069xx  | Analysis, Design, and App Development |
 
-Chức năng:
+### Features:
 
-- Ứng dụng Web - Sử dụng NodeJS và React JS:
-  + Quản lý vị trí tuyển dụng: Tạo và quản lý danh sách các vị trí tuyển dụng khác nhau trong một tổ chức
-  + Thu thập hồ sơ ứng viên: Cung cấp biểu mẫu đơn xin việc để thu thập thông tin từ ứng viên
-  + Quản lý thông tin ứng viên: Lưu trữ và quản lý thông tin chi tiết về ứng viên bao gồm hồ sơ, kinh nghiệm làm việc, trình độ học vấn và kỹ năng,...
-  + Tích hợp email và gửi thông báo về email: Tích hợp vớ email để gửi thông báo về tình trạng tuyển dụng và kết quả phỏng vấn cho ứng viên
-  + Đánh giá ứng viên: Các thành viên trong đội ngũ tuyển dụng đánh giá và ghi chú về ứng viên sau mỗi cuộc phỏng vấn
-  + Lên lịch phỏng vấn: Lên lịch và quản lý các cuộc phỏng vấn với ứng viên và gửi thông báo tự động về lịch phỏng vấn
-  + Thống kê và báo cáo: Tạo các báo cáo thống kê về quá trình tuyển dụng, hiệu suất, nguồn tuyển dụng và thời gian phỏng vấn
+#### Web Application - Using NodeJS and ReactJS:
+- **Recruitment Position Management**: Create and manage a list of recruitment positions within an organization.
+- **Candidate Resume Collection**: Provide application forms to collect candidate information.
+- **Candidate Information Management**: Store and manage detailed candidate information, including resumes, work experience, education, and skills.
+- **Email Integration and Notifications**: Send notifications regarding recruitment statuses and interview results to candidates via email.
+- **Candidate Evaluation**: Allow team members to evaluate and note observations about candidates after each interview.
+- **Interview Scheduling**: Schedule and manage interviews with candidates, with automated notifications sent regarding interview details.
+- **Statistics and Reports**: Generate statistical reports on the recruitment process, performance, sourcing, and interview durations.
 
-- Ứng dụng Windows - Sử dụng Winforms .NET Core:
-   + Quản lý vị trí tuyển dụng: Tạo và quản lý danh sách các vị trí tuyển dụng khác nhau trong một tổ chức
-  + Thu thập hồ sơ ứng viên: Cung cấp biểu mẫu đơn xin việc để thu thập thông tin từ ứng viên
-  + Quản lý thông tin ứng viên: Lưu trữ và quản lý thông tin chi tiết về ứng viên bao gồm hồ sơ, kinh nghiệm làm việc, trình độ học vấn và kỹ năng,...
-  + Tích hợp email và gửi thông báo về email: Tích hợp vớ email để gửi thông báo về tình trạng tuyển dụng và kết quả phỏng vấn cho ứng viên
-  + Đánh giá ứng viên: Các thành viên trong đội ngũ tuyển dụng đánh giá và ghi chú về ứng viên sau mỗi cuộc phỏng vấn
-  + Lên lịch phỏng vấn: Lên lịch và quản lý các cuộc phỏng vấn với ứng viên và gửi thông báo tự động về lịch phỏng vấn
-  + Thống kê và báo cáo: Tạo các báo cáo thống kê về quá trình tuyển dụng, hiệu suất, nguồn tuyển dụng và thời gian phỏng vấn
-    
-- Ứng dụng AI :
-  + Gợi í công việc phù hợp với ứng viên.
-  + Chatbox tư vấn công việc sử dụng API OpenAl 
+#### Windows Application - Using WinForms .NET Core:
+- **Recruitment Position Management**: Create and manage a list of recruitment positions within an organization.
+- **Candidate Resume Collection**: Provide application forms to collect candidate information.
+- **Candidate Information Management**: Store and manage detailed candidate information, including resumes, work experience, education, and skills.
+- **Email Integration and Notifications**: Send notifications regarding recruitment statuses and interview results to candidates via email.
+- **Candidate Evaluation**: Allow team members to evaluate and note observations about candidates after each interview.
+- **Interview Scheduling**: Schedule and manage interviews with candidates, with automated notifications sent regarding interview details.
+- **Statistics and Reports**: Generate statistical reports on the recruitment process, performance, sourcing, and interview durations.
 
+#### AI Application:
+- **Job Recommendations**: Suggest suitable job positions for candidates.
+- **Career Consultation Chatbox**: Provide career advice using OpenAI API.
