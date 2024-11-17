@@ -12,9 +12,9 @@ Team Members:
 
 | Name             | Student ID  | Responsibilities               |
 |------------------|:-----------:|--------------------------------:|
-| Vũ Minh Nghĩa    | 20012069xx  | AI Feature Development         |
-| Nguyễn Hữu Trí   | 20012006xx  | Web Development                |
-| Phạm Thị Ngọc Ánh| 20012069xx  | Analysis, Design, and App Development |
+| Vũ Minh Nghĩa    | 200120xxxx  | AI Feature Development         |
+| Nguyễn Hữu Trí   | 200120xxxx  | Web Development                |
+| Phạm Thị Ngọc Ánh| 200120xxxx  | Analysis, Design, and App Development |
 
 ### Features:
 
